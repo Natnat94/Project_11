@@ -1,0 +1,70 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% block content %}
+
+
+
+<!-- Masthead -->
+<header class="masthead">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center justify-content-center text-center">
+            <div class="col-lg-10 align-self-end">
+                <h1 class="text-uppercase text-white font-weight-bold">Du gras oui mais de qualité!</h1>
+
+            </div>
+            <div class="col-lg-8 align-self-baseline">
+                <p class="text-white-75 font-weight-light mb-5">Trouvez un produit de substitution pour ceux que vous
+                    consommez tous les jours.</p>
+                <form class="example" action="{% url 'research' %}" method="get">
+                    <input type="text" placeholder="Search..." name="q">
+                    <button type="search">Chercher</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<!-- Services Section -->
+<section class="page-section" id="services">
+    <div class="container">
+        <h2 class="text-center mt-0">Mentions légale</h2>
+        <hr class="divider my-4">
+        
+        <div class="text-center-left mt-0">Licence d'utilisation des données des produits alimentaires
+            La base de données Open Food Facts est disponible sous la licence <a href="https://opendatacommons.org/licenses/odbl/1.0/"> Open Database License</a>. <br>
+            Les contenus individuels de la base de données sont disponibles sous la licence <a href="https://opendatacommons.org/licenses/dbcl/1.0/">Database Contents License</a>. <br>
+            Les photos de produits sont disponibles sous la licence <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.en">Creative Commons Attribution Partage</a> à l'identique.
+            Elles peuvent contenir des éléments graphiques soumis à droit d'auteur, copyright ou droit des marques, qui
+            peuvent dans certains cas être reproduits (droit de citation, droit à l'information ou "fair use").
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="page-section bg-primary" id="contact">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="mt-0">Contactez-nous!</h2>
+                <hr class="divider my-4">
+                <p class="text-muted mb-5">Du gras, oui, mais de qualité !</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 ml-auto text-center mb-5 mb-lg-0">
+                <i class="fas fa-phone fa-3x mb-3 text-muted"></i>
+                <div>+33180888030</div>
+            </div>
+            <div class="col-lg-4 mr-auto text-center">
+                <i class="fas fa-envelope fa-3x mb-3 text-muted"></i>
+                <!-- Make sure to change the email address in anchor text AND the link below! -->
+                <a class="d-block" style="color: blue;"  href="mailto:mail@mail.com">mail@mail.com</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock content %}
