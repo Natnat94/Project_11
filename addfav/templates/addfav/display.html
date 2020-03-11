@@ -1,0 +1,53 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% block content %}
+<!-- Masthead -->
+
+<header class="header-product" id="about">
+</header>
+
+<div class="container">
+    <section>
+        <h1 class="mt-2">Produits sauvegardés</h1><br><br><br>
+        <div class="row justify-content-center">
+
+            {% for prod in products %}
+            <div class="col-6">
+                <div class="box">
+                    <div class="parent">
+                        {% with 'blog/img/nutriscore-'|add:prod.product_id.nutriscore|add:'.svg' as image_static %}
+                        <img class="image1" id="image1" src="{% static image_static %}" />
+                        {% endwith %}
+                        <div class="image2">
+                            <img src="{{ prod.product_id.mini_image }}" />
+                        </div>
+                    </div>
+                    <div style="text-align: center" class="texte">
+                        <a href="/product/{{ prod.product_id.product_id }}"
+                            target="_blank">{{ prod.product_id.product_name }}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                    <div class="box">
+                        <div class="parent">
+                            {% with 'blog/img/nutriscore-'|add:prod.sub_id.nutriscore|add:'.svg' as image_static %}
+                            <img class="image1" id="image1" src="{% static image_static %}" />
+                            {% endwith %}
+                            <div class="image2">
+                                <img src="{{ prod.sub_id.mini_image }}" />
+                            </div>
+                        </div>
+                        <div style="text-align: center" class="texte">
+                            <a href="/product/{{ prod.sub_id.product_id }}"
+                                target="_blank">{{ prod.sub_id.product_name }}</a>
+                        </div>
+                    </div>
+            
+            </div>
+            {% endfor %}
+
+        </div>
+    </section>
+</div>
+{% endblock content %}
