@@ -26,7 +26,7 @@ class Store(models.Model):
 class Product(models.Model):
     product_id = models.BigIntegerField(primary_key=True)
     product_name = models.CharField(max_length=200)
-    category = models.ManyToManyField(Category)
+    category_id = models.ManyToManyField(Category)
     link = models.TextField(null=True)
     description = models.TextField(null=True)
     nutriscore = models.CharField(max_length=2)
