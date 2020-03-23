@@ -1,4 +1,5 @@
 from django.test import TestCase, Client
+from django.contrib.auth.forms import PasswordChangeForm
 from authentification.models import User
 
 
@@ -30,7 +31,37 @@ class TestViews(TestCase):
         self.assertTrue(user_login)
     
     def test_profil(self):
-        pass
+        self.client.login(username='rien@g.com', password='1X<ISRUkw+tuK')
+        c = Client()
+        
+        c.post('/profil/', {'first_name': 'tata', 'last_name': 'mimi'}, follow=True)
+        user = User.objects.get(username='rien@g.com')
+
+        # self.assertEqual(response.status_code, 200)
+        self.assertEqual('tata', user.first_name)
+        # self.assertEqual('mii', user.last_name)
+        self.assertEqual('nathan.jpg', user.image.name)
 
     def test_change_password(self):
-        pass
+        user_login = self.client.login(username='rien@g.com', password='1X<ISRUkw+tuK')
+
+        c = Client()
+        user = User.objects.get(username='rien@g.com')
+        pwd = user.password
+
+        data = {'old_password': '1X<ISRUkw+tuK', 'new_password1': '1X<ISGHJSGJHkw+tuK', 'new_password2': '1X<ISGHJSGJHkw+tuK'}
+        response = c.post('/profil/password/',data , follow=False)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'authentification/password.html')
+        
+
+        user = User.objects.get(username='rien@g.com')
+        pwd2 = user.password
+
+        self.assertEqual(response.context['test1'], 0)
+        self.assertNotEqual(pwd, pwd2)
+
+        user_login = self.client.login(username='rien@g.com', password='1X<ISGHJSGJHkw+tuK')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(user_login)
