@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
 from django.contrib.auth.forms import PasswordChangeForm
+from django.core.files.uploadedfile import SimpleUploadedFile
 from authentification.models import User
 
 
@@ -31,37 +32,36 @@ class TestViews(TestCase):
         self.assertTrue(user_login)
     
     def test_profil(self):
-        self.client.login(username='rien@g.com', password='1X<ISRUkw+tuK')
         c = Client()
-        
-        c.post('/profil/', {'first_name': 'tata', 'last_name': 'mimi'}, follow=True)
+        c.login(username='rien@g.com', password='1X<ISRUkw+tuK')
+        testfile = (
+            b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04'
+            b'\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02'
+            b'\x02\x4c\x01\x00\x3b')
+        image = SimpleUploadedFile('nathan.jpg', testfile, content_type='image/jpeg')
+        response = c.post('/profil/', {'first_name': 'tata', 'last_name': 'mimi', 'image': image}, follow=True)
         user = User.objects.get(username='rien@g.com')
 
-        # self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertEqual('tata', user.first_name)
-        # self.assertEqual('mii', user.last_name)
-        self.assertEqual('nathan.jpg', user.image.name)
+        self.assertEqual('mimi', user.last_name)
+        self.assertEqual('profile_pics/nathan.jpg', user.image.name)
 
     def test_change_password(self):
-        user_login = self.client.login(username='rien@g.com', password='1X<ISRUkw+tuK')
-
         c = Client()
+        c.login(username='rien@g.com', password='1X<ISRUkw+tuK')
         user = User.objects.get(username='rien@g.com')
         pwd = user.password
 
         data = {'old_password': '1X<ISRUkw+tuK', 'new_password1': '1X<ISGHJSGJHkw+tuK', 'new_password2': '1X<ISGHJSGJHkw+tuK'}
-        response = c.post('/profil/password/',data , follow=False)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'authentification/password.html')
-        
-
+        response = c.post('/profil/password/',data , follow=True)
         user = User.objects.get(username='rien@g.com')
         pwd2 = user.password
 
-        self.assertEqual(response.context['test1'], 0)
-        self.assertNotEqual(pwd, pwd2)
-
-        user_login = self.client.login(username='rien@g.com', password='1X<ISGHJSGJHkw+tuK')
-
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(user_login)
+        self.assertTemplateUsed(response, 'authentification/password.html')
+        self.assertNotEqual(pwd, pwd2)
+    
+    def tearDown(self):
+        user = User.objects.get(username='rien@g.com')
+        user.image.delete()
