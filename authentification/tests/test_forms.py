@@ -13,12 +13,15 @@ class TestForms(TestCase):
         test_user1.save()
 
     def test_userregisterform_success(self):
+        """ test that the 'userregisterform' is working """
         form_data = {'username': 'rien@g.com',
                      'password1': '1X<ISRUkw+tuK', 'password2': '1X<ISRUkw+tuK'}
         form = UserRegisterForm(data=form_data)
         self.assertTrue(form.is_valid())
 
     def test_userregisterform_failed(self):
+        """ test that the 'userregisterform' is failling when two different password
+            have been provided or a wrong format email have been given """
         form_data = {'username': 'rien@g.com',
                      'password1': '1X<ISRUkw+tuK', 'password2': '1X<+tuK'}
         form = UserRegisterForm(data=form_data)
@@ -30,6 +33,7 @@ class TestForms(TestCase):
         self.assertFalse(form.is_valid())
 
     def test_userupdateform_success(self):
+        """ test that the user profil update form is working """
         user_logged = User.objects.get(username='rien42@g.com')
         testfile = (
             b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04'

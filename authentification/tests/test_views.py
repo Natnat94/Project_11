@@ -13,6 +13,7 @@ class TestViews(TestCase):
         test_user1.save()
 
     def test_profil_view_logged(self):
+        """ test that the profil view is showed when logged to the system """
         self.client.login(username='rien@g.com', password='1X<ISRUkw+tuK')
         resp = self.client.get('/profil/')
 
@@ -20,11 +21,13 @@ class TestViews(TestCase):
         self.assertTemplateUsed(resp, 'authentification/profil.html')
 
     def test_profil_view_not_logged(self):
+        """ test that the profil view is showed only when logged to the system """
         resp = self.client.get('/profil/')
 
         self.assertEqual(resp.status_code, 302)
 
     def test_register(self):
+        """ test the register a user view """
         c = Client()
         response = c.post('/register/', {'username': 'rie47n@g.com',
                                          'password1': '1X<ISRUkw+tuK', 
@@ -36,6 +39,7 @@ class TestViews(TestCase):
         self.assertTrue(user_login)
 
     def test_profil(self):
+        """ test the update the profil view """
         c = Client()
         c.login(username='rien@g.com', password='1X<ISRUkw+tuK')
         testfile = (
@@ -54,6 +58,7 @@ class TestViews(TestCase):
         self.assertEqual('profile_pics/nathan.jpg', user.image.name)
 
     def test_change_password(self):
+        """ test the change the user password view """
         c = Client()
         c.login(username='rien@g.com', password='1X<ISRUkw+tuK')
         user = User.objects.get(username='rien@g.com')
@@ -71,5 +76,6 @@ class TestViews(TestCase):
         self.assertNotEqual(pwd, pwd2)
 
     def tearDown(self):
+        """ remove the profile picture uploaded during the test """
         user = User.objects.get(username='rien@g.com')
         user.image.delete()

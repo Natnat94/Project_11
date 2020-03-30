@@ -29,11 +29,14 @@ def profil(request):
             u_form.save()
     else:
         u_form = UserUpdateForm(initial={
-                            'username': user.username,
-                            'first_name': user.first_name,
-                            'last_name': user.last_name
-                            })
-    return render(request, 'authentification/profil.html', {'user': user, 'title': 'Mon profil', 'form': u_form})
+            'username': user.username,
+            'first_name': user.first_name,
+            'last_name': user.last_name
+        })
+    return render(request, 'authentification/profil.html', {'user': user, 
+                                                            'title': 'Mon profil', 
+                                                            'form': u_form})
+
 
 @login_required(login_url='login')
 def change_password(request):
@@ -47,4 +50,6 @@ def change_password(request):
             messages.error(request, "Veuillez corriger l'erreur.")
     else:
         form = PasswordChangeForm(request.user)
-    return render(request, 'authentification/password.html', {'user': request.user, 'title': 'Mon profil', 'form': form})
+    return render(request, 'authentification/password.html', {'user': request.user, 
+                                                              'title': 'Mon profil', 
+                                                              'form': form})
