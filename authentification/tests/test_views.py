@@ -8,7 +8,8 @@ class TestViews(TestCase):
     """ class that test the view of the 'authentification' app """
 
     def setUp(self):
-        test_user1 = User.objects.create_user(username='rien@g.com', password='1X<ISRUkw+tuK')
+        test_user1 = User.objects.create_user(
+            username='rien@g.com', password='1X<ISRUkw+tuK')
         test_user1.save()
 
     def test_profil_view_logged(self):
@@ -17,20 +18,23 @@ class TestViews(TestCase):
 
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'authentification/profil.html')
-    
+
     def test_profil_view_not_logged(self):
         resp = self.client.get('/profil/')
 
         self.assertEqual(resp.status_code, 302)
-    
+
     def test_register(self):
         c = Client()
-        response = c.post('/register/', {'username': 'rie47n@g.com', 'password1': '1X<ISRUkw+tuK', 'password2': '1X<ISRUkw+tuK'}, follow=True)
-        user_login = self.client.login(username='rie47n@g.com', password='1X<ISRUkw+tuK')
+        response = c.post('/register/', {'username': 'rie47n@g.com',
+                                         'password1': '1X<ISRUkw+tuK', 
+                                         'password2': '1X<ISRUkw+tuK'}, follow=True)
+        user_login = self.client.login(
+            username='rie47n@g.com', password='1X<ISRUkw+tuK')
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(user_login)
-    
+
     def test_profil(self):
         c = Client()
         c.login(username='rien@g.com', password='1X<ISRUkw+tuK')
@@ -38,8 +42,10 @@ class TestViews(TestCase):
             b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04'
             b'\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02'
             b'\x02\x4c\x01\x00\x3b')
-        image = SimpleUploadedFile('nathan.jpg', testfile, content_type='image/jpeg')
-        response = c.post('/profil/', {'first_name': 'tata', 'last_name': 'mimi', 'image': image}, follow=True)
+        image = SimpleUploadedFile(
+            'nathan.jpg', testfile, content_type='image/jpeg')
+        response = c.post(
+            '/profil/', {'first_name': 'tata', 'last_name': 'mimi', 'image': image}, follow=True)
         user = User.objects.get(username='rien@g.com')
 
         self.assertEqual(response.status_code, 200)
@@ -53,15 +59,17 @@ class TestViews(TestCase):
         user = User.objects.get(username='rien@g.com')
         pwd = user.password
 
-        data = {'old_password': '1X<ISRUkw+tuK', 'new_password1': '1X<ISGHJSGJHkw+tuK', 'new_password2': '1X<ISGHJSGJHkw+tuK'}
-        response = c.post('/profil/password/',data , follow=True)
+        data = {'old_password': '1X<ISRUkw+tuK',
+                'new_password1': '1X<ISGHJSGJHkw+tuK', 
+                'new_password2': '1X<ISGHJSGJHkw+tuK'}
+        response = c.post('/profil/password/', data, follow=True)
         user = User.objects.get(username='rien@g.com')
         pwd2 = user.password
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'authentification/password.html')
         self.assertNotEqual(pwd, pwd2)
-    
+
     def tearDown(self):
         user = User.objects.get(username='rien@g.com')
         user.image.delete()

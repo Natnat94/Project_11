@@ -8,23 +8,27 @@ from ..forms import UserRegisterForm, UserUpdateForm
 
 class TestForms(TestCase):
     def setUp(self):
-        test_user1 = User.objects.create_user(username='rien42@g.com', password='1X<ISRUkw+tuK')
+        test_user1 = User.objects.create_user(
+            username='rien42@g.com', password='1X<ISRUkw+tuK')
         test_user1.save()
 
     def test_userregisterform_success(self):
-        form_data = {'username': 'rien@g.com', 'password1': '1X<ISRUkw+tuK', 'password2': '1X<ISRUkw+tuK'}
+        form_data = {'username': 'rien@g.com',
+                     'password1': '1X<ISRUkw+tuK', 'password2': '1X<ISRUkw+tuK'}
         form = UserRegisterForm(data=form_data)
         self.assertTrue(form.is_valid())
 
     def test_userregisterform_failed(self):
-        form_data = {'username': 'rien@g.com', 'password1': '1X<ISRUkw+tuK', 'password2': '1X<+tuK'}
+        form_data = {'username': 'rien@g.com',
+                     'password1': '1X<ISRUkw+tuK', 'password2': '1X<+tuK'}
         form = UserRegisterForm(data=form_data)
         self.assertFalse(form.is_valid())
 
-        form_data = {'username': 'rien', 'password1': '1X<ISRUkw+tuK', 'password2': '1X<ISRUkw+tuK'}
+        form_data = {'username': 'rien',
+                     'password1': '1X<ISRUkw+tuK', 'password2': '1X<ISRUkw+tuK'}
         form = UserRegisterForm(data=form_data)
         self.assertFalse(form.is_valid())
-    
+
     def test_userupdateform_success(self):
         user_logged = User.objects.get(username='rien42@g.com')
         testfile = (
@@ -32,9 +36,11 @@ class TestForms(TestCase):
             b'\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02'
             b'\x02\x4c\x01\x00\x3b')
         form_data = {'first_name': 'nathan', 'last_name': 'mimoun'}
-        form_file = {'image': SimpleUploadedFile('myimage.jpg', testfile, content_type='image/jpeg')}
-        form = UserUpdateForm(data=form_data, files=form_file, instance=user_logged)
- 
+        form_file = {'image': SimpleUploadedFile(
+            'myimage.jpg', testfile, content_type='image/jpeg')}
+        form = UserUpdateForm(
+            data=form_data, files=form_file, instance=user_logged)
+
         self.assertTrue(form.is_valid())
         self.assertEqual(user_logged.first_name, 'nathan')
         self.assertEqual(user_logged.last_name, 'mimoun')
