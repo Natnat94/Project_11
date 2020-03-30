@@ -16,5 +16,6 @@ gunicorn = "*"
 sentry-sdk = "*"
 pillow = "*"
 django = "*"
+psycopg2 = "*"
 
 [requires]
