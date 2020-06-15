@@ -23,7 +23,7 @@ class Storedb:
         )
         b.save()
         for category in categories_list:
-            b.category.add(Category.objects.get(name=category))
+            b.category_id.add(Category.objects.get(name=category))
 
         for store in stores_list:
             b.stores.add(Store.objects.get(name=store))
