@@ -5,7 +5,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import LoggingIntegration 
 
 DEBUG = False
-ALLOWED_HOSTS = ['project10.nathan-mimoun.live']
+ALLOWED_HOSTS = ['projet10.nathan-mimoun.live']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
